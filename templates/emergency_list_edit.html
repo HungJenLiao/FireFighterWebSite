@@ -1,0 +1,29 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 救護案件列表編輯 {% endblock title %}
+
+{% block content %} 
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">救護案件列表編輯</h1>
+    <!-- Edit Code -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3"></div>
+        <div class="card-body">
+            <div>編號： <input type="text" value="{{emergency_obj.id}}"></div><br>
+            <div>案發時間： <input type="text" value="{{emergency_obj.time}}"></div><br>
+            <div>單位： <input type="text" value="{{emergency_obj.unit}}"></div><br>
+            <div>類別： <input type="text" value="{{emergency_obj.category}}"></div><br>
+            <div>內容： <input type="text" value="{{emergency_obj.detail}}"></div><br>
+            <div>地點： <input type="text" value="{{emergency_obj.location}}"></div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+<!-- table_list css -->
+<link href="{% static 'dashboard/css/table_list.css' %}" rel="stylesheet">

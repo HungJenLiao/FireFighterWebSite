@@ -1,0 +1,67 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 救護案件列表 {% endblock title %}
+
+{% block content %}
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">救護案件列表</h1>
+    <!-- Table Code -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form}}
+                <input type="submit" name="submit">
+            </form>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                <!-- <table class="table table-bordered" width="100%" cellspacing="0"> -->
+                    <thead>
+                        <tr>
+                            <th>編號</th>
+                            <th>案發日期</th>
+                            <th>單位</th>
+                            <th>類別</th>
+                            <th>內容</th>
+                            <th>地點</th>
+                            <th>修改</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for emergency in emergency_list %}
+                        <tr>
+                            <td>{{ emergency.id }}</td>
+                            <td>{{ emergency.time|date:"Y/m/d H:m:s" }}</td>
+                            <td>{{ emergency.unit }}</td>
+                            <td>{{ emergency.category }}</td>
+                            <td>{{ emergency.detail }}</td>
+                            <td>{{ emergency.location }}</td>
+                            <td>
+                                <a href="edit/{{emergency.id}}/">
+                                    <img class="img-profile" src="{% static './dashboard/img/edit_icon.svg' %}">
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+</div>
+<!-- End of Main Content -->
+{% endblock content %}
+
+{% block css %}
+<!-- table_list css -->
+<link href="{% static 'dashboard/css/table_list.css' %}" rel="stylesheet">
+{% endblock css %}

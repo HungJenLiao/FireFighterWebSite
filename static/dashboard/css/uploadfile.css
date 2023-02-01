@@ -1,0 +1,53 @@
+.content_head{
+    height: 150px;
+    width: 100%;
+    text-align: center;
+}
+
+.form {
+    display: block;
+    margin-top: 0em;
+    width: 100%;
+}
+
+.function_box{
+    display: block;
+    width: 100%;
+    margin-top: 22px;
+    height: 300px;
+    padding: 0.375rem 0.75rem;
+}
+
+.function_choosefile{
+    height: 100px;
+    width: 100%;
+    margin-top: 22px;
+    border: 1px dashed #c1c1c1;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.function_choosefile_input{
+    width: 100%;
+    margin-top: 35px;
+}
+
+
+
+/* .input_box{
+    position: relative;
+    width: 220px;
+    height: 58px;
+    background: #184e94;
+    color: #fff;
+    line-height: 58px;
+    display: inline-block;
+    font-size: 18px;
+} */
+/*
+.input{
+    margin: 0;
+    font-size: 100%;
+    vertical-align: middle;
+} */
+

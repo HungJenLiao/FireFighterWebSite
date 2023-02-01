@@ -1,0 +1,64 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 使用者 {% endblock title %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">使用者列表</h1>
+
+    <!-- Page Content -->
+    <div class="card shadow mb-4">
+        <!-- Card Header -->
+        <div class="card-header py-3"></div>
+        <!-- Card Content -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <!-- Member Table -->
+                <div class="table-responsive">
+                    <table class="table table-bordered" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <td>標號</td>
+                                <td>使用者帳號</td>
+                                <td>Email</td>
+                                <td>前次登入時間</td>
+                                <td>加入時間</td>
+                                <td>修改</td>
+                            </tr>
+                        </tdead>
+                        <tbody>
+                            {% for user in all_users %}
+                            <tr>
+                                <td>{{ user.id }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.email }}</td>
+                                <td>{{ user.last_login|date:"Y/m/d H:m:s" }}</td>
+                                <td>{{ user.date_joined|date:"Y/m/d H:m:s" }}</td>
+                                <td>
+                                    <a href="./member_list_edit.html">
+                                        <img class="img-profile" src="{% static './dashboard/img/edit_icon.svg' %}">
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    
+                </div>
+                <!-- End of Member Table -->
+            </div>
+        </div>
+        <!-- End of Card Content -->              
+    </div>
+    <!-- End of Page Content-->
+</div>
+
+{% endblock content %}
+
+{% block css %}
+<!-- member_list css -->
+<link href="{% static 'dashboard/css/table_list.css' %}" rel="stylesheet">
+{% endblock css %}

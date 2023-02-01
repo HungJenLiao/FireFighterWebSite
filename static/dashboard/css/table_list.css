@@ -1,0 +1,29 @@
+/* .table_list {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #858796;
+} */
+/* table{
+    border: 1px solid black;
+} */
+
+thead{
+    background-color: yellow;
+}
+
+/* tr{
+    border: 1px solid black;
+} */
+
+/* td{
+    border: 1px solid black;
+} */
+
+.img-edit{
+    display: block;
+    margin-left: auto; 
+    margin-right: auto; 
+    height: 0.5em;
+    width: 0.5em;
+}
+

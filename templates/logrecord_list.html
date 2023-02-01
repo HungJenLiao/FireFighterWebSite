@@ -1,0 +1,23 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 使用者紀錄 {% endblock title %}
+
+{% block content %}
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+
+        <!-- Content Wrapper -->
+        <div>
+            <h1>{{ Lastlogin }}</h1>
+        </div>
+        <br></br>
+        <div>
+            <h1>{{ Datejoined }}</h1>
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+{% endblock content %} 

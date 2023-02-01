@@ -1,0 +1,43 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 資料上傳 {% endblock title %}
+
+{% block content %}
+
+<div class="content_head">
+    <h1 class="h1 py-5 text-gray-800">Excel上傳</h1>
+</div>
+<form method="POST" enctype="multipart/form-data">
+    <div class="function_box">
+        <div class="function_choosefile">
+            <div class="function_choosefile_input">
+                <div class="input_box">
+                    {% csrf_token %}
+                    <input type="file" name="uploadFile" id="uploadFile" accept=".xlsx">
+                    <button>上傳</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+    
+</form>
+<form>
+    <div class="function_box">
+        <div class="function_choosefile">
+            <div class="function_choosefile_input">
+                <div class="input_box">
+                    {% csrf_token %}
+                    <button action="">點擊轉換</button>
+                </div> 
+            </div>
+        </div>
+    </div>
+</form>
+{% endblock content %}
+
+{% block css %}
+<!-- Page for uploadFile css -->
+<link href="{% static 'dashboard/css/uploadfile.css' %}" rel="stylesheet">
+{% endblock css %}
+
