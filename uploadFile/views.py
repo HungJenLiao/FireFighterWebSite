@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import Emergency
-from .models import Member
+from .forms import EmergencyForm
 from django.contrib.auth.models import User, auth
 from django .contrib.auth.decorators import login_required
 
@@ -113,9 +113,29 @@ def emergency_list(request):
     return render(request, 'emergency_list.html', context)
 
 @login_required
-def emergency_list_edit(request, id):
+def emergency_list_update(request, id):
+    #Login FullName
+    fullname = request.user.get_full_name()
+    #Get Each ID
     emergency_obj = Emergency.objects.get(id = id)
-    context = {'emergency_obj': emergency_obj}
+    #Form
+    form = EmergencyForm
+    context = {'fullname': fullname, 'emergency_obj': emergency_obj, 'form': form}
+    return render(request, 'emergency_list_update.html', context)
+
+def emergency_list_edit(request):
+    #Login FullName
+    fullname = request.user.get_full_name()
+    #Form
+    if request.method == "POST":
+        form = EmergencyForm(request.POST)
+        if form.is_valid():
+            form.save()
+            context = {'fullname': fullname, 'form': form}
+            return redirect('/emergency_list/', context)
+    else:
+        form = EmergencyForm
+    context = {'fullname': fullname, 'form': form}
     return render(request, 'emergency_list_edit.html', context)
 
 @login_required

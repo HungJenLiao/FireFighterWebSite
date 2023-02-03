@@ -12,11 +12,7 @@
     <!-- Table Code -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <form action="" method="POST">
-                {% csrf_token %}
-                {{form}}
-                <input type="submit" name="submit">
-            </form>
+            <a href="edit/">新增救護案件</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -43,7 +39,7 @@
                             <td>{{ emergency.detail }}</td>
                             <td>{{ emergency.location }}</td>
                             <td>
-                                <a href="edit/{{emergency.id}}/">
+                                <a href="update/{{emergency.id}}/">
                                     <img class="img-profile" src="{% static './dashboard/img/edit_icon.svg' %}">
                                 </a>
                             </td>

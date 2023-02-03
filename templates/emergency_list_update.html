@@ -1,0 +1,34 @@
+{% extends './main_template.html' %}
+{% load static %}
+
+{% block title %} 救護案件列表更新 {% endblock title %}
+
+{% block content %} 
+
+<!-- Begin Page Content -->
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <h1 class="h3 mb-2 text-gray-800">救護案件列表編輯</h1>
+    <!-- Edit Code -->
+    <div class="card shadow mb-4">
+        <div class="card-header py-3"></div>
+        <div class="card-body">
+            <form action="" method="POST" enctype="multipart/form-dat">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <!-- <div>編號： <input type="text" name="number" value="{{emergency_obj.id}}"></div><br>
+                <div>案發時間： <input type="text" name="time" value="{{emergency_obj.time}}"></div><br>
+                <div>單位： <input type="text" name="unit" value="{{emergency_obj.unit}}"></div><br>
+                <div>類別： <input type="text" name="category" value="{{emergency_obj.category}}"></div><br>
+                <div>內容： <input type="text" name="detail" value="{{emergency_obj.detail}}"></div><br>
+                <div>地點： <input type="text" name="location" value="{{emergency_obj.location}}"></div> -->
+                <button type="submit" name="upd_bt" value="add" class="btn btn-primary btn-block">修改</button>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- /.container-fluid -->
+{% endblock content %}
+
+<!-- table_list css -->
+<link href="{% static 'dashboard/css/table_list.css' %}" rel="stylesheet">
