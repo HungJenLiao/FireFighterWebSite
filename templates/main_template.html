@@ -47,7 +47,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="/dashboard/">
+                <a class="nav-link" href="{% url 'dashboard' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>資訊列表</span></a>
             </li>
@@ -62,7 +62,7 @@
 
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/uploadFile/">
+                <a class="nav-link collapsed" href="{% url 'uploadfile' %}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>資料上傳</span>
                 </a>
@@ -70,14 +70,14 @@
 
             <!-- Nav Item - Emergency List -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/emergency_list/">
+                <a class="nav-link collapsed" href="{% url 'EmList' %}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>救護案件列表</span>
                 </a>
             </li>
 
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/news/">
+                <a class="nav-link collapsed" href="{% url 'news' %}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>新聞剪輯</span>
                 </a>
@@ -100,7 +100,7 @@
 
             <!-- Nav Item - member_list -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/member_list/">
+                <a class="nav-link collapsed" href="{% url 'MemberList' %}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>使用者</span>
                 </a>
@@ -108,7 +108,7 @@
 
             <!-- Nav Item - Log Record -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="/logrecord_list/">
+                <a class="nav-link collapsed" href="{% url 'LogList' %}">
                     <i class="fas fa-fw fa-cog"></i>
                     <span>使用紀錄</span>
                 </a>

@@ -12,7 +12,7 @@
     <!-- Table Code -->
     <div class="card shadow mb-4">
         <div class="card-header py-3">
-            <a href="edit/">新增救護案件</a>
+            <a href="{% url 'EmListEdit' %}">新增救護案件</a>
         </div>
         <div class="card-body">
             <div class="table-responsive">
@@ -20,26 +20,29 @@
                 <!-- <table class="table table-bordered" width="100%" cellspacing="0"> -->
                     <thead>
                         <tr>
-                            <th>編號</th>
                             <th>案發日期</th>
-                            <th>單位</th>
-                            <th>類別</th>
+                            <th>車輛</th>
                             <th>內容</th>
                             <th>地點</th>
+                            <th>狀態</th>
                             <th>修改</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for emergency in emergency_list %}
                         <tr>
-                            <td>{{ emergency.id }}</td>
                             <td>{{ emergency.time|date:"Y/m/d H:m:s" }}</td>
-                            <td>{{ emergency.unit }}</td>
-                            <td>{{ emergency.category }}</td>
+                            <td>{{ emergency.car }}</td>
                             <td>{{ emergency.detail }}</td>
                             <td>{{ emergency.location }}</td>
+                            {% if emergency.status == '0' %}
+                            <td>完成</td>
+                            {% else %}
+                            <td>需修改</td>
+                            {% endif %}
                             <td>
-                                <a href="update/{{emergency.id}}/">
+                                <!-- <a href="update/{{emergency.id}}/"> -->
+                                <a href="{% url 'EmListUpdate' emergency.id %}">
                                     <img class="img-profile" src="{% static './dashboard/img/edit_icon.svg' %}">
                                 </a>
                             </td>

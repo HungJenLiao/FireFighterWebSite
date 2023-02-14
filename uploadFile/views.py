@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from .models import Emergency
 from .forms import EmergencyForm
 from django.contrib.auth.models import User, auth
@@ -57,29 +57,51 @@ def uploadFile(request):
             return render(request, 'uploadFile.html', {'msg': '沒有選擇文件'})
         if not uploadedFile.name.endswith('.xlsx'):
             return render(request, 'uploadFile.html', {'msg': '必須選擇xlsx文件'})
-        #上傳資料
-        with open(uploadedFile.name, 'wb') as fp:
-            for chunk in uploadedFile.chunks():
-                fp.write(chunk)
-        #導入數據庫
-        ws = load_workbook(uploadedFile).worksheets[0]
-        #刪去欄位名稱
-        ws.delete_rows(0, 1)
-        max_column = ws.max_column
-        #刪除所有資料
-        Emergency.objects.all().delete()
-        for index, row in enumerate(ws.rows):
-            #填補缺失值
-            for num in range(0, max_column):
-                if row[num].value == None:
-                    row[num].value = 0
-            Emergency.objects.create(time = row[0].value, 
-                                     unit = row[1].value,
-                                     category = row[2].value, 
-                                     detail = row[3].value, 
-                                     location = row[4].value)
+        # #上傳資料
+        # with open(uploadedFile.name, 'wb') as fp:
+        #     for chunk in uploadedFile.chunks():
+        #         fp.write(chunk)
+        # #導入數據庫
+        # ws = load_workbook(uploadedFile).worksheets[0]
+        # #刪去欄位名稱
+        # ws.delete_rows(0, 1)
+        # max_column = ws.max_column
+        # #刪除所有資料
+        # Emergency.objects.all().delete()
+        # for index, row in enumerate(ws.rows):
+        #     #填補缺失值
+        #     for num in range(0, max_column):
+        #         if row[num].value == None:
+        #             row[num].value = 0
+        #     Emergency.objects.create(time = row[0].value, 
+        #                              unit = row[1].value,
+        #                              category = row[2].value, 
+        #                              detail = row[3].value, 
+        #                              location = row[4].value)
+        nameTransform(uploadedFile)
         return render(request, 'uploadFile.html', {'fullname': fullname})
     return render(request, 'uploadFile.html', {'fullname': fullname})
+
+def nameTransform(fp):
+    #導入上傳的資料
+    import pandas as pd
+    df = pd.read_excel(fp)
+    #######################################################
+    #導入 search.py 引用 data_cleaning 去除缺失值以及更改時間格式,
+    #search_addr 利用 selenium 上國土測繪網站進行爬蟲
+    #search.write_to_file("XXXXX.xlsx", df)儲存到local進行測試
+    #######################################################
+    import search
+    df_info = search.data_cleaning(df)
+    df_locations = df_info[0].iloc[117:121]
+    # df_locations_num = df_info[1]
+    df_locations_num = 3
+    for num in range(117, 121):
+        df_locations[num] = search.search_addr(df_locations[num])
+        print(num)
+    df["發生地點"] = df_locations
+    
+    search.write_to_file("測試.xlsx", df)
 
 @login_required
 def dashboard(request):
@@ -113,11 +135,11 @@ def emergency_list(request):
     return render(request, 'emergency_list.html', context)
 
 @login_required
-def emergency_list_update(request, id):
+def emergency_list_update(request, Em_id):
     #Login FullName
     fullname = request.user.get_full_name()
     #Get Each ID
-    emergency_obj = Emergency.objects.get(id = id)
+    emergency_obj = Emergency.objects.get(pk = Em_id)
     #Form
     form = EmergencyForm
     context = {'fullname': fullname, 'emergency_obj': emergency_obj, 'form': form}
@@ -127,15 +149,18 @@ def emergency_list_edit(request):
     #Login FullName
     fullname = request.user.get_full_name()
     #Form
+    submitted = False
     if request.method == "POST":
         form = EmergencyForm(request.POST)
         if form.is_valid():
             form.save()
             context = {'fullname': fullname, 'form': form}
-            return redirect('/emergency_list/', context)
+            return HttpResponseRedirect('/emergency_list/edit?submitted=True/', context)
     else:
         form = EmergencyForm
-    context = {'fullname': fullname, 'form': form}
+        if 'submitted' in request.GET:
+            submitted = True
+    context = {'fullname': fullname, 'form': form, 'submitted': submitted}
     return render(request, 'emergency_list_edit.html', context)
 
 @login_required
@@ -174,12 +199,6 @@ def barChartInfo(file):
     import counting
     response = counting.count_num(file)
     return response
-
-def search_id():
-    from django.db import connection
-    cursor = connection.cursor()
-    first = cursor.execute('SELECT * FROM emergency')
-    print(first)
 
 def test(request):
     # emergency_objs = Emergency.objects.all().order_by("id")
