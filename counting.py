@@ -33,6 +33,3 @@ def count_num(file):
     
     response = json.dumps(region, ensure_ascii=False)
     return response
-
-def count(file):
-    return file

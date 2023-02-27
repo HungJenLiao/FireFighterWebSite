@@ -36,14 +36,20 @@
                             <td>{{ emergency.detail }}</td>
                             <td>{{ emergency.location }}</td>
                             {% if emergency.status == '0' %}
-                            <td>完成</td>
+                            <td>待確認</td>
                             {% else %}
-                            <td>需修改</td>
+                            <td>完成</td>
                             {% endif %}
                             <td>
                                 <!-- <a href="update/{{emergency.id}}/"> -->
-                                <a href="{% url 'EmListUpdate' emergency.id %}">
+                                <!-- <a href="{% url 'EmListUpdate' emergency.id %}">
                                     <img class="img-profile" src="{% static './dashboard/img/edit_icon.svg' %}">
+                                </a> -->
+                                <a href="{% url 'EmListUpdate' emergency.id %}" class="btn btn-outline-primary btn-sm">
+                                    Update
+                                </a>
+                                <a href="{% url 'EmListDelete' emergency.id %}" class="btn btn-outline-danger btn-sm">
+                                    Delete
                                 </a>
                             </td>
                         </tr>

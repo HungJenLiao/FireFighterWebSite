@@ -85,23 +85,46 @@ def uploadFile(request):
 def nameTransform(fp):
     #導入上傳的資料
     import pandas as pd
+    import numpy as np
     df = pd.read_excel(fp)
     #######################################################
     #導入 search.py 引用 data_cleaning 去除缺失值以及更改時間格式,
     #search_addr 利用 selenium 上國土測繪網站進行爬蟲
     #search.write_to_file("XXXXX.xlsx", df)儲存到local進行測試
     #######################################################
+
+    #新增“狀態”欄位
+    df = df[['案發日期', '出勤車輛', '案件細項', '發生地點']]
+    status_value = np.zeros(len(df.index), dtype = np.int)
+    df.insert(len(df.columns), '狀態', status_value)
+
     import search
     df_info = search.data_cleaning(df)
-    df_locations = df_info[0].iloc[117:121]
-    # df_locations_num = df_info[1]
-    df_locations_num = 3
-    for num in range(117, 121):
-        df_locations[num] = search.search_addr(df_locations[num])
+    df_locations = df_info[0]
+    df_locations_num = df_info[1]
+    for num in range(0, df_locations_num):
+        df_locations[num] = search.search_addr(df_locations[num])[0]
         print(num)
     df["發生地點"] = df_locations
-    
     search.write_to_file("測試.xlsx", df)
+    insert_data()
+
+def insert_data():
+    uploadedFile = "測試.xlsx"
+    #導入數據庫
+    ws = load_workbook(uploadedFile).worksheets[0]
+    #刪去欄位名稱
+    ws.delete_rows(0, 1)
+    max_column = ws.max_column
+    #刪除所有資料
+    # Emergency.objects.all().delete()
+    for index, row in enumerate(ws.rows):
+        Emergency.objects.create(time = row[0].value, 
+                 car = row[1].value,
+                 detail = row[2].value, 
+                 location = row[3].value, 
+                 status = row[4].value)
+    print("Successfully Import Data")
 
 @login_required
 def dashboard(request):
@@ -140,10 +163,21 @@ def emergency_list_update(request, Em_id):
     fullname = request.user.get_full_name()
     #Get Each ID
     emergency_obj = Emergency.objects.get(pk = Em_id)
-    #Form
-    form = EmergencyForm
+    #Form request or None
+    form = EmergencyForm(request.POST or None, instance = emergency_obj)
+    if form.is_valid():
+        form.save()
+        return redirect('EmList')
     context = {'fullname': fullname, 'emergency_obj': emergency_obj, 'form': form}
     return render(request, 'emergency_list_update.html', context)
+
+@login_required
+def emergency_list_delete(request, Em_id):
+    #Get Each ID
+    emergency_obj = Emergency.objects.get(pk = Em_id)
+    #Delete
+    emergency_obj.delete()
+    return redirect('EmList')
 
 def emergency_list_edit(request):
     #Login FullName
